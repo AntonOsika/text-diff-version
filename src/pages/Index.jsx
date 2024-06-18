@@ -48,9 +48,10 @@ const Index = () => {
     const selection = window.getSelection();
     const selectedText = selection.toString();
     if (selectedText) {
-      const { x, y } = selection.getRangeAt(0).getBoundingClientRect();
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
       setSelectedText(selectedText);
-      setChatBoxPosition({ x, y });
+      setChatBoxPosition({ x: rect.right + window.scrollX, y: rect.bottom + window.scrollY });
       setShowChatBox(true);
     } else {
       setShowChatBox(false);
@@ -87,6 +88,10 @@ const Index = () => {
     } catch (error) {
       console.error("Error fetching data from OpenAI:", error);
     }
+  };
+
+  const handleQueryBoxClick = (e) => {
+    e.stopPropagation();
   };
 
   return (
@@ -129,7 +134,7 @@ const Index = () => {
       </Box>
 
       {showChatBox && (
-        <Box position="absolute" top={`${chatBoxPosition.y}px`} left={`${chatBoxPosition.x}px`} bg="white" p={4} borderWidth="1px" borderRadius="lg" zIndex={1000}>
+        <Box position="absolute" top={`${chatBoxPosition.y}px`} left={`${chatBoxPosition.x}px`} bg="white" p={4} borderWidth="1px" borderRadius="lg" zIndex={1000} onClick={handleQueryBoxClick}>
           <Textarea
             value={query}
             onChange={handleQueryChange}
