@@ -51,7 +51,7 @@ const Index = () => {
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
       setSelectedText(selectedText);
-      setChatBoxPosition({ x: rect.right + window.scrollX, y: rect.bottom + window.scrollY });
+      setChatBoxPosition({ x: rect.right + window.scrollX + 10, y: rect.bottom + window.scrollY + 10 });
       setShowChatBox(true);
     } else if (!e.target.closest('.chat-box')) {
       setShowChatBox(false);
