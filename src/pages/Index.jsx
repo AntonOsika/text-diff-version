@@ -53,7 +53,7 @@ const Index = () => {
       setSelectedText(selectedText);
       setChatBoxPosition({ x: rect.right + window.scrollX, y: rect.bottom + window.scrollY });
       setShowChatBox(true);
-    } else {
+    } else if (!e.target.closest('.chat-box')) {
       setShowChatBox(false);
     }
   };
@@ -134,7 +134,7 @@ const Index = () => {
       </Box>
 
       {showChatBox && (
-        <Box position="absolute" top={`${chatBoxPosition.y}px`} left={`${chatBoxPosition.x}px`} bg="white" p={4} borderWidth="1px" borderRadius="lg" zIndex={1000} onClick={handleQueryBoxClick}>
+        <Box className="chat-box" position="absolute" top={`${chatBoxPosition.y}px`} left={`${chatBoxPosition.x}px`} bg="white" p={4} borderWidth="1px" borderRadius="lg" zIndex={1000} onClick={handleQueryBoxClick}>
           <Textarea
             value={query}
             onChange={handleQueryChange}
