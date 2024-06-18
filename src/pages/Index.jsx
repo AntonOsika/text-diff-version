@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Textarea, VStack, Button, Box, Text } from "@chakra-ui/react";
+import { Container, Textarea, VStack, Button, Box, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, useDisclosure } from "@chakra-ui/react";
 import { diffChars } from "diff";
 
 const Index = () => {
   const [text, setText] = useState("");
   const [versions, setVersions] = useState([]);
   const [diffText, setDiffText] = useState([]);
+  const [apiKey, setApiKey] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const storedVersions = JSON.parse(localStorage.getItem("versions")) || [];
@@ -13,6 +15,8 @@ const Index = () => {
     if (storedVersions.length > 0) {
       setText(storedVersions[storedVersions.length - 1]);
     }
+    const storedApiKey = localStorage.getItem("apiKey") || "";
+    setApiKey(storedApiKey);
   }, []);
 
   useEffect(() => {
@@ -27,6 +31,11 @@ const Index = () => {
     const newVersions = [...versions, text];
     setVersions(newVersions);
     localStorage.setItem("versions", JSON.stringify(newVersions));
+  };
+
+  const handleSaveApiKey = () => {
+    localStorage.setItem("apiKey", apiKey);
+    onClose();
   };
 
   return (
@@ -51,6 +60,9 @@ const Index = () => {
         <Button mt={4} colorScheme="teal" onClick={handleAccept}>
           Accept
         </Button>
+        <Button mt={4} ml={4} colorScheme="blue" onClick={onOpen}>
+          Settings
+        </Button>
         <Box mt={4} height="20vh" overflowY="scroll">
           {diffText.map((part, index) => (
             <Text
@@ -63,6 +75,27 @@ const Index = () => {
           ))}
         </Box>
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Settings</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input
+              placeholder="Enter your OpenAI API key"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleSaveApiKey}>
+              Save
+            </Button>
+            <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };
