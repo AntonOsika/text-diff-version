@@ -149,9 +149,9 @@ const Index = () => {
   };
 
   return (
-    <Container centerContent maxW="container.xl" height="100vh" display="flex" flexDirection="row" justifyContent="center" alignItems="center" onMouseUp={handleTextSelect}>
-      <Box width="20%" height="80vh" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
-        <VStack spacing={4} align="stretch">
+    <Container centerContent maxW="container.xl" height="100vh" display="flex" flexDirection="row" justifyContent="space-between" alignItems="stretch" p={0} m={0}>
+      <Box width="10%" height="100%" borderWidth="1px" borderRadius="lg" overflow="hidden" p={2}>
+        <VStack spacing={2} align="stretch">
           {versions.map((version, index) => (
             <Text key={index} fontSize="sm" isTruncated>
               Version {index + 1}
@@ -159,24 +159,26 @@ const Index = () => {
           ))}
         </VStack>
       </Box>
-      <Box width="70%" height="80vh" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} ml={4}>
+      <Box width="45%" height="100%" borderWidth="1px" borderRadius="lg" overflow="hidden" p={2} ml={2}>
+        <Box height="80%" overflowY="scroll">
+          {renderDiffAsMarkdown(diffText)}
+        </Box>
+      </Box>
+      <Box width="45%" height="100%" borderWidth="1px" borderRadius="lg" overflow="hidden" p={2} ml={2}>
         <Textarea
           ref={textAreaRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Type here..."
           size="lg"
-          height="70%"
+          height="80%"
         />
-        <Button mt={4} colorScheme="teal" onClick={handleAccept}>
+        <Button mt={2} colorScheme="teal" onClick={handleAccept}>
           Accept
         </Button>
-        <Button mt={4} ml={4} colorScheme="blue" onClick={onOpen}>
+        <Button mt={2} ml={2} colorScheme="blue" onClick={onOpen}>
           Settings
         </Button>
-        <Box mt={4} height="20vh" overflowY="scroll">
-          {renderDiffAsMarkdown(diffText)}
-        </Box>
       </Box>
 
       {showChatBox && (
