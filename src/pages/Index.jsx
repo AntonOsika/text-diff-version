@@ -63,6 +63,11 @@ const Index = () => {
   };
 
   const handleQuerySubmit = async () => {
+    if (!apiKey) {
+      onOpen();
+      return;
+    }
+
     const configuration = new Configuration({
       apiKey: apiKey,
     });
@@ -80,7 +85,7 @@ const Index = () => {
 
     try {
       const response = await openai.createChatCompletion({
-        model: "gpt-4o",
+        model: "gpt-4",
         messages: [{ role: "system", content: prompt }],
       });
 
