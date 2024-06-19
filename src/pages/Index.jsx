@@ -14,6 +14,7 @@ const Index = () => {
   const [chatBoxPosition, setChatBoxPosition] = useState({ x: 0, y: 0 });
   const [query, setQuery] = useState("");
   const textAreaRef = useRef(null);
+  const [selectionRange, setSelectionRange] = useState(null);
 
   useEffect(() => {
     const storedVersions = JSON.parse(localStorage.getItem("versions")) || [];
@@ -51,6 +52,7 @@ const Index = () => {
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
       setSelectedText(selectedText);
+      setSelectionRange(range); // Store the selection range
       setChatBoxPosition({ x: rect.right + window.scrollX + 10, y: rect.bottom + window.scrollY + 10 });
       setShowChatBox(true);
     } else if (!e.target.closest('.chat-box')) {
@@ -97,6 +99,13 @@ const Index = () => {
       const newVersions = [...versions, newText];
       setVersions(newVersions);
       localStorage.setItem("versions", JSON.stringify(newVersions));
+
+      // Restore the selection range
+      if (selectionRange) {
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(selectionRange);
+      }
     } catch (error) {
       console.error("Error fetching data from OpenAI:", error);
     }
@@ -162,7 +171,7 @@ const Index = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Settings</          ModalHeader>
+          <ModalHeader>Settings</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Input
