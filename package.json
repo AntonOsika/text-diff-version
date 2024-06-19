@@ -25,7 +25,6 @@
         "@emotion/styled": "^11.11.0",
         "diff": "^5.2.0",
         "framer-motion": "^10.16.15",
-        "marked": "^5.1.2",
         "openai": "^3.3.0",
         "react": "^18.2.0",
         "react-dom": "^18.3.1",
