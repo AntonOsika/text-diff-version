@@ -89,9 +89,14 @@ const Index = () => {
         messages: [{ role: "system", content: prompt }],
       });
 
-      const newText = text.replace(selectedText, response.data.choices[0].message.content);
+      const newText = text.replace(selectedText, response.data.choices[0].message.content.trim());
       setText(newText);
       setShowChatBox(false);
+
+      // Remember the selection and the response
+      const newVersions = [...versions, newText];
+      setVersions(newVersions);
+      localStorage.setItem("versions", JSON.stringify(newVersions));
     } catch (error) {
       console.error("Error fetching data from OpenAI:", error);
     }
@@ -157,7 +162,7 @@ const Index = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Settings</ModalHeader>
+          <ModalHeader>Settings</          ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Input
