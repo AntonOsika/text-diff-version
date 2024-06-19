@@ -75,6 +75,7 @@ const Index = () => {
 
       <document>${text}<document>
       <selection>${selectedText}<selection>
+      <instructions>${query}<instructions>
     `;
 
     try {
