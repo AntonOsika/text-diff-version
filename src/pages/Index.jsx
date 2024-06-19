@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Container, Textarea, VStack, Button, Box, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, useDisclosure } from "@chakra-ui/react";
 import { diffChars } from "diff";
 import { Configuration, OpenAIApi } from "openai";
+import { marked } from "marked";
 
 const Index = () => {
   const [text, setText] = useState("");
@@ -132,6 +133,21 @@ const Index = () => {
     e.stopPropagation();
   };
 
+  const renderDiffAsMarkdown = (diff) => {
+    return diff.map((part, index) => {
+      const html = marked(part.value);
+      const color = part.added ? "green.500" : part.removed ? "red.500" : "black";
+      return (
+        <Text
+          key={index}
+          as="span"
+          color={color}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      );
+    });
+  };
+
   return (
     <Container centerContent maxW="container.xl" height="100vh" display="flex" flexDirection="row" justifyContent="center" alignItems="center" onMouseUp={handleTextSelect}>
       <Box width="20%" height="80vh" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
@@ -159,15 +175,7 @@ const Index = () => {
           Settings
         </Button>
         <Box mt={4} height="20vh" overflowY="scroll">
-          {diffText.map((part, index) => (
-            <Text
-              key={index}
-              as="span"
-              color={part.added ? "green.500" : part.removed ? "red.500" : "black"}
-            >
-              {part.value}
-            </Text>
-          ))}
+          {renderDiffAsMarkdown(diffText)}
         </Box>
       </Box>
 
