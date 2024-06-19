@@ -53,6 +53,17 @@ const Index = () => {
       const rect = range.getBoundingClientRect();
       setSelectedText(selectedText);
       setSelectionRange(range); // Store the selection range
+
+      // Create a container for the chat box
+      const chatBoxContainer = document.createElement('div');
+      chatBoxContainer.style.position = 'absolute';
+      chatBoxContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
+      chatBoxContainer.style.left = `${rect.right + window.scrollX + 10}px`;
+      chatBoxContainer.className = 'chat-box-container';
+
+      // Append the chat box container to the body
+      document.body.appendChild(chatBoxContainer);
+
       setChatBoxPosition({ x: rect.right + window.scrollX + 10, y: rect.bottom + window.scrollY + 10 });
       setShowChatBox(true);
     } else if (!e.target.closest('.chat-box')) {
@@ -94,6 +105,12 @@ const Index = () => {
       const newText = text.replace(selectedText, response.data.choices[0].message.content.trim());
       setText(newText);
       setShowChatBox(false);
+
+      // Remove the chat box container
+      const chatBoxContainer = document.querySelector('.chat-box-container');
+      if (chatBoxContainer) {
+        chatBoxContainer.remove();
+      }
 
       // Remember the selection and the response
       const newVersions = [...versions, newText];
