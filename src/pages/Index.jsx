@@ -67,6 +67,7 @@ const Index = () => {
       apiKey: apiKey,
     });
     const openai = new OpenAIApi(configuration);
+    delete configuration.baseOptions.headers['User-Agent'];
 
     const prompt = `
       you will get text in a document and a selection of the document.
