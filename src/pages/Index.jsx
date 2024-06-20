@@ -35,6 +35,19 @@ const Index = () => {
     }
   }, [text, versions]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (textAreaRef.current && !textAreaRef.current.contains(event.target) && !event.target.closest('.chat-box')) {
+        setShowChatBox(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleAccept = () => {
     const newVersions = [...versions, text];
     setVersions(newVersions);
@@ -154,6 +167,7 @@ const Index = () => {
           ref={textAreaRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onMouseUp={handleTextSelect}
           placeholder="Type here..."
           size="lg"
           height="100%"
