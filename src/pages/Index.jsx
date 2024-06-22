@@ -68,7 +68,10 @@ const Index = () => {
       setSelectedText(selectedText);
       setSelectionRange(range); // Store the selection range
 
-      setChatBoxPosition({ x: rect.right + window.scrollX + 10, y: rect.bottom + window.scrollY + 10 });
+      // Calculate the correct position for the chat box
+      const scrollX = window.scrollX || document.documentElement.scrollLeft;
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      setChatBoxPosition({ x: rect.right + scrollX + 10, y: rect.bottom + scrollY + 10 });
       setShowChatBox(true);
     } else if (!e.target.closest('.chat-box')) {
       setShowChatBox(false);
